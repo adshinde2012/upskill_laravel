@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,3 +26,14 @@ Route::get('/welcome', function () {
 // Route::get('/user', [UserController::class, 'index']);
 
 Route::resource('users', UserController::class);
+
+Route::get('/home', function () {
+    return view('home');
+});
+
+Route::resource('companies', CompanyController::class);
+
+Route::match(['GET', 'POST'], 'login',  [AuthController::class, 'index']);
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
