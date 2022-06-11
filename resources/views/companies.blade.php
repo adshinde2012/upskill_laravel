@@ -508,6 +508,51 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
+      <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#companyModal"><i class="bi bi-plus me-1"></i> Add Company</button>
+      <!-- Modal -->
+      <div class="modal fade" id="companyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Add Company</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- Vertical Form -->
+            <form method="post" action = "{{ url('companies') }}">
+              @csrf
+            <div class="modal-body">
+               
+              <div class="row g-3">
+                <div class="col-12">
+                  <label for="name" class="form-label">Company Name</label>
+                  <input type="text" class="form-control" id="name" name="name">
+                </div>
+                <div class="col-12">
+                  <label for="email" class="form-label">Email</label>
+                  <input type="email" class="form-control" id="email" name="email">
+                </div>
+                <div class="col-12">
+                  <label for="logo" class="form-label">Logo</label>
+                  <input type="password" class="form-control" id="logo" name="logo">
+                </div>
+                <div class="col-12">
+                  <label for="website" class="form-label">Website</label>
+                  <input type="text" class="form-control" id="website" name="website">
+                </div>
+                <input type="hidden" class="form-control" id="id" name="id">
+              </div> 
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Reset</button>
+              <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+
+
       <h1>Data Tables</h1>
       <nav>
         <ol class="breadcrumb">
@@ -524,56 +569,35 @@
 
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Datatables</h5>
-              <p>Add lightweight datatables to your project with using the <a href="https://github.com/fiduswriter/Simple-DataTables" target="_blank">Simple DataTables</a> library. Just add <code>.datatable</code> class name to any table you wish to conver to a datatable</p>
-
+              <h5 class="card-title">Company List</h5>
+              <p><a href="https://github.com/fiduswriter/Simple-DataTables" target="_blank">Simple DataTables</a> library. Just add <code>.datatable</code></p>
+              
               <!-- Table with stripped rows -->
               <table class="table datatable">
                 <thead>
                   <tr>
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Position</th>
-                    <th scope="col">Age</th>
-                    <th scope="col">Start Date</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Logo</th>
+                    <th scope="col">Website</th>
+                    <th scope="col">Action</th>
                   </tr>
                 </thead>
                 <tbody>
+                  @foreach ($companies as $comp)
                   <tr>
-                    <th scope="row">1</th>
-                    <td>Brandon Jacob</td>
-                    <td>Designer</td>
-                    <td>28</td>
-                    <td>2016-05-25</td>
+                    <th scope="row">{{ $loop->index + 1 }}</th>
+                    <td>{{ $comp->name }}</td>
+                    <td>{{ $comp->email }}</td>
+                    <td>{{ $comp->logo }}</td>
+                    <td>{{ $comp->website }}</td>
+                    <td>
+                      <a data-bs-toggle="modal" data-bs-target="#companyModal" id="editCompanyBtn" data-info="{{ $comp }}"><i class="bi bi-pencil-square p-2 text-success"></i></a>
+                      <a href="{{ route('companies.destroy') }}"><i class="bi bi-trash-fill p-2 text-danger"></i></a>
+                      </td>
                   </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Bridie Kessler</td>
-                    <td>Developer</td>
-                    <td>35</td>
-                    <td>2014-12-05</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>Ashleigh Langosh</td>
-                    <td>Finance</td>
-                    <td>45</td>
-                    <td>2011-08-12</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">4</th>
-                    <td>Angus Grady</td>
-                    <td>HR</td>
-                    <td>34</td>
-                    <td>2012-06-11</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">5</th>
-                    <td>Raheem Lehner</td>
-                    <td>Dynamic Division Officer</td>
-                    <td>47</td>
-                    <td>2011-04-19</td>
-                  </tr>
+                  @endforeach
                 </tbody>
               </table>
               <!-- End Table with stripped rows -->
@@ -612,9 +636,24 @@
   <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
   <script src="assets/vendor/tinymce/tinymce.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+  <script type="text/javascript">
+    $('#companyModal').on('shown.bs.modal', function (event) {
+      var button = event.relatedTarget;
+      var info = $(button).data('info');
+      if (typeof info != 'undefined' && info != '') {
+        $(this).find('#id').val(info.id);
+        $(this).find('#name').val(info.name);
+        $(this).find('#email').val(info.email);
+        $(this).find('#logo').val(info.logo);
+        $(this).find('#website').val(info.website);
+        $(this).find('form').attr('method', 'post');
+        $(this).find('form').attr('action', '{{ url("companies") }}');
+      }
+    })
+  </script>
 
 </body>
 

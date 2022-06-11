@@ -17,7 +17,7 @@ class CompanyController extends Controller
     {
         //
         $companies = Company::all();
-        return Redirect::route('', ['companies' => $companies]);
+        return view('companies', ['companies' => $companies]);
     }
 
     /**
@@ -39,6 +39,13 @@ class CompanyController extends Controller
     public function store(Request $request)
     {
         //
+        if (!empty($request->id)) {
+            $company = Company::find($request->id);
+            $company->update($request->all());
+        } else {
+            Company::create($request->all());
+        }
+        return redirect()->route('companies.index');
     }
 
     /**
@@ -50,6 +57,8 @@ class CompanyController extends Controller
     public function show(Company $company)
     {
         //
+        
+        return redirect()->route('dash');
     }
 
     /**
@@ -70,9 +79,14 @@ class CompanyController extends Controller
      * @param  \App\Models\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Company $company)
+    public function update(Request $request)
     {
         //
+        // return redirect()->route('dashboard');
+        // $company = Company::find($request->id);
+        // $company->save($request->all());
+
+        // return redirect()->route('companies.index');
     }
 
     /**
@@ -81,8 +95,14 @@ class CompanyController extends Controller
      * @param  \App\Models\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Company $company)
+    public function destroy($id)
     {
         //
+        $company = Company::find($id);
+        $company->delete();
+
+        // redirect
+        Session::flash('message', 'Successfully deleted the company!');
+        return Redirect::to('companies.index');
     }
 }

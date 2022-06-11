@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CompanyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,8 +28,8 @@ Route::get('/welcome', function () {
 
 Route::resource('users', UserController::class);
 
-Route::get('/home', function () {
-    return view('home');
+Route::get('/dashboard', function () {
+    return view('dashboard');
 });
 
 Route::resource('companies', CompanyController::class);
@@ -36,4 +37,4 @@ Route::resource('companies', CompanyController::class);
 Route::match(['GET', 'POST'], 'login',  [AuthController::class, 'index']);
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
