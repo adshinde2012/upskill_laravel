@@ -356,7 +356,7 @@
 
           <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Company List</h5>
+              <h5 class="card-title">Employee List</h5>
               <p><a href="https://github.com/fiduswriter/Simple-DataTables" target="_blank">Simple DataTables</a> library. Just add <code>.datatable</code></p>
               
               <!-- Table with stripped rows -->
@@ -364,27 +364,25 @@
                 <thead>
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Logo</th>
-                    <th scope="col">Website</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Company</th>
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  @foreach ($companies as $comp)
+                  @foreach ($employees as $emp)
                   <tr>
                     <th scope="row">{{ $loop->index + 1 }}</th>
-                    <td>{{ $comp->name }}</td>
-                    <td>{{ $comp->email }}</td>
-                    <td>{{ $comp->logo }}</td>
-                    <td>{{ $comp->website }}</td>
+                    <td>{{ $emp->firstname }}</td>
+                    <td>{{ $emp->lastname }}</td>
+                    <td>{{ $emp->company_id }}</td>
                     <td class="d-flex">
-                      <a class="float-start" data-bs-toggle="modal" data-bs-target="#companyModal" id="editCompanyBtn" data-info="{{ $comp }}"><i class="bi bi-pencil-square p-2 text-success"></i></a>
-                      <form action="{{ route('companies.destroy', $comp->id) }}" method="POST">
+                      <a class="float-start" data-bs-toggle="modal" data-bs-target="#employeeModal" id="editEmployeeBtn" data-info="{{ $emp }}"><i class="bi bi-pencil-square p-2 text-success"></i></a>
+                      <form action="{{ route('employees.destroy', $emp->id) }}" method="POST">
                           @method('DELETE')
                           @csrf
-                          <button class="btn p-0" type="submit" id="deleteCompany"><i class="bi bi-trash-fill text-danger"></i></button>
+                          <button class="btn p-0" type="submit" id="deleteEmployee"><i class="bi bi-trash-fill text-danger"></i></button>
                       </form>
                       </td>
                   </tr>
@@ -431,19 +429,19 @@
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
   <script type="text/javascript">
-    $('#companyModal').on('shown.bs.modal', function (event) {
-      var button = event.relatedTarget;
-      var info = $(button).data('info');
-      if (typeof info != 'undefined' && info != '') {
-        $(this).find('#id').val(info.id);
-        $(this).find('#name').val(info.name);
-        $(this).find('#email').val(info.email);
-        $(this).find('#logo').val(info.logo);
-        $(this).find('#website').val(info.website);
-        $(this).find('form').attr('method', 'post');
-        $(this).find('form').attr('action', '{{ url("companies") }}');
-      }
-    })
+    // $('#companyModal').on('shown.bs.modal', function (event) {
+    //   var button = event.relatedTarget;
+    //   var info = $(button).data('info');
+    //   if (typeof info != 'undefined' && info != '') {
+    //     $(this).find('#id').val(info.id);
+    //     $(this).find('#name').val(info.name);
+    //     $(this).find('#email').val(info.email);
+    //     $(this).find('#logo').val(info.logo);
+    //     $(this).find('#website').val(info.website);
+    //     $(this).find('form').attr('method', 'post');
+    //     $(this).find('form').attr('action', '{{ url("companies") }}');
+    //   }
+    // })
   </script>
 
 </body>
