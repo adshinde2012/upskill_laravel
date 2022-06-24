@@ -295,36 +295,40 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#companyModal"><i class="bi bi-plus me-1"></i> Add Company</button>
+      <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#employeeModal"><i class="bi bi-plus me-1"></i> Add Employee</button>
       <!-- Modal -->
-      <div class="modal fade" id="companyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal fade" id="employeeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Add Company</h5>
+              <h5 class="modal-title" id="exampleModalLabel">Add Employee</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <!-- Vertical Form -->
-            <form method="post" action = "{{ url('companies') }}">
+            <form method="post" action = "{{ url('employees') }}">
               @csrf
             <div class="modal-body">
                
               <div class="row g-3">
                 <div class="col-12">
-                  <label for="name" class="form-label">Company Name</label>
-                  <input type="text" class="form-control" id="name" name="name">
+                  <label for="firstname" class="form-label">Firstname</label>
+                  <input type="text" class="form-control" id="firstname" name="firstname">
+                  @error('firstname')
+                      <div class="text-danger">{{ $message }}</div>
+                  @enderror
                 </div>
                 <div class="col-12">
-                  <label for="email" class="form-label">Email</label>
-                  <input type="email" class="form-control" id="email" name="email">
+                  <label for="lastname" class="form-label">Lastname</label>
+                  <input type="text" class="form-control" id="lastname" name="lastname">
                 </div>
                 <div class="col-12">
-                  <label for="logo" class="form-label">Logo</label>
-                  <input type="password" class="form-control" id="logo" name="logo">
-                </div>
-                <div class="col-12">
-                  <label for="website" class="form-label">Website</label>
-                  <input type="text" class="form-control" id="website" name="website">
+                  <label class="col-sm-2 col-form-label">Select</label>
+                  <select class="form-select" id="company_id" name="company_id">
+                    <option selected="">Select Company</option>
+                    @foreach ($companies as $company)
+                    <option value="{{ $company->id }}">{{ $company->name }}</option>
+                    @endforeach
+                  </select>
                 </div>
                 <input type="hidden" class="form-control" id="id" name="id">
               </div> 
@@ -357,7 +361,6 @@
           <div class="card">
             <div class="card-body">
               <h5 class="card-title">Employee List</h5>
-              <p><a href="https://github.com/fiduswriter/Simple-DataTables" target="_blank">Simple DataTables</a> library. Just add <code>.datatable</code></p>
               
               <!-- Table with stripped rows -->
               <table class="table datatable">
@@ -376,14 +379,36 @@
                     <th scope="row">{{ $loop->index + 1 }}</th>
                     <td>{{ $emp->firstname }}</td>
                     <td>{{ $emp->lastname }}</td>
-                    <td>{{ $emp->company_id }}</td>
+                    <td>{{ $emp->name }}</td>
                     <td class="d-flex">
-                      <a class="float-start" data-bs-toggle="modal" data-bs-target="#employeeModal" id="editEmployeeBtn" data-info="{{ $emp }}"><i class="bi bi-pencil-square p-2 text-success"></i></a>
-                      <form action="{{ route('employees.destroy', $emp->id) }}" method="POST">
-                          @method('DELETE')
-                          @csrf
-                          <button class="btn p-0" type="submit" id="deleteEmployee"><i class="bi bi-trash-fill text-danger"></i></button>
-                      </form>
+                      <a class="float-start" data-bs-toggle="modal" data-bs-target="#employeeModal" id="editEmployeeBtn" data-info="{{ json_encode($emp) }}"><i class="bi bi-pencil-square p-2 text-success"></i></a>
+                          <a href="#deleteConfirmModal" class="" data-bs-toggle="modal" ><i class="bi bi-trash-fill text-danger"></i></a>
+                          <!-- Modal HTML -->
+                          <div id="deleteConfirmModal" class="modal fade">
+                              <div class="modal-dialog modal-confirm modal-sm">
+                                  <div class="modal-content">
+                                      <div class="modal-header flex-column">
+                                          <div class="icon-box">
+                                              <i class="material-icons">&times;</i>
+                                          </div>
+                                          <h4 class="modal-title w-100">Are you sure?</h4>
+                                          <a class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</a>
+                                      </div>
+                                      <div class="modal-body">
+                                          <p>Do you really want to delete these records? This process cannot be undone.</p>
+                                      </div>
+                                      <form action="{{ route('employees.destroy', $emp->id) }}" method="POST">
+                                      <div class="modal-footer justify-content-center">
+                                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                          @method('DELETE')
+                                          @csrf
+                                          <!-- <button class="btn p-0" type="submit"><i class="bi bi-trash-fill text-danger"></i></button> -->
+                                          <button type="submit" class="btn btn-danger" id="deleteEmployee">Delete</button>
+                                      </div>
+                                      </form>
+                                  </div>
+                              </div>
+                          </div>
                       </td>
                   </tr>
                   @endforeach
@@ -429,19 +454,18 @@
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
   <script type="text/javascript">
-    // $('#companyModal').on('shown.bs.modal', function (event) {
-    //   var button = event.relatedTarget;
-    //   var info = $(button).data('info');
-    //   if (typeof info != 'undefined' && info != '') {
-    //     $(this).find('#id').val(info.id);
-    //     $(this).find('#name').val(info.name);
-    //     $(this).find('#email').val(info.email);
-    //     $(this).find('#logo').val(info.logo);
-    //     $(this).find('#website').val(info.website);
-    //     $(this).find('form').attr('method', 'post');
-    //     $(this).find('form').attr('action', '{{ url("companies") }}');
-    //   }
-    // })
+    $('#employeeModal').on('shown.bs.modal', function (event) {
+      var button = event.relatedTarget;
+      var info = $(button).data('info');
+      if (typeof info != 'undefined' && info != '') {
+        $(this).find('#id').val(info.id);
+        $(this).find('#firstname').val(info.firstname);
+        $(this).find('#lastname').val(info.lastname);
+        $(this).find('#company_id').val(info.company_id);
+        $(this).find('form').attr('method', 'post');
+        $(this).find('form').attr('action', '{{ url("employees") }}');
+      }
+    })
   </script>
 
 </body>

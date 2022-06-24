@@ -28,6 +28,7 @@
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" integrity="sha512-H9jrZiiopUdsLpg94A333EfumgUBpO9MdbxStdeITo+KEIMaNfHNvwyjjDJb+ERPaRS6DpyRlKbvPUasNItRyw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <!-- =======================================================
   * Template Name: NiceAdmin - v2.2.2
@@ -305,7 +306,7 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <!-- Vertical Form -->
-            <form method="post" action = "{{ url('companies') }}">
+            <form method="post" action = "{{ url('companies') }}" enctype='multipart/form-data'>
               @csrf
             <div class="modal-body">
                
@@ -320,7 +321,7 @@
                 </div>
                 <div class="col-12">
                   <label for="logo" class="form-label">Logo</label>
-                  <input type="password" class="form-control" id="logo" name="logo">
+                  <input type="file" class="form-control" id="logo" name="logo">
                 </div>
                 <div class="col-12">
                   <label for="website" class="form-label">Website</label>
@@ -377,9 +378,13 @@
                     <th scope="row">{{ $loop->index + 1 }}</th>
                     <td>{{ $comp->name }}</td>
                     <td>{{ $comp->email }}</td>
-                    <td>{{ $comp->logo }}</td>
+                    <td>
+                    <a href="https://bit.ly/2q0iuay" data-fancybox="gallery" data-caption="Caption Images 1">
+                      <img src="/img/{{ $comp->logo }}" height="75" width="75" alt="" />
+                    </a>
+                    </td>
                     <td>{{ $comp->website }}</td>
-                    <td class="d-flex">
+                    <td class="">
                       <a class="float-start" data-bs-toggle="modal" data-bs-target="#companyModal" id="editCompanyBtn" data-info="{{ $comp }}"><i class="bi bi-pencil-square p-2 text-success"></i></a>
                       <form action="{{ route('companies.destroy', $comp->id) }}" method="POST">
                           @method('DELETE')
@@ -430,6 +435,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js" integrity="sha512-uURl+ZXMBrF4AwGaWmEetzrd+J5/8NRkWAvJx5sbPSSuOb0bZLqf+tOzniObO00BjHa/dD7gub9oCGMLPQHtQA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script type="text/javascript">
     $('#companyModal').on('shown.bs.modal', function (event) {
       var button = event.relatedTarget;
@@ -444,6 +450,19 @@
         $(this).find('form').attr('action', '{{ url("companies") }}');
       }
     })
+    // Fancybox Config
+$('[data-fancybox="gallery"]').fancybox({
+  buttons: [
+    "slideShow",
+    "thumbs",
+    "zoom",
+    "fullScreen",
+    "share",
+    "close"
+  ],
+  loop: false,
+  protect: true
+});
   </script>
 
 </body>

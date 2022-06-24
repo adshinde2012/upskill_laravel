@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EmployeeController extends Controller
 {
@@ -15,8 +17,12 @@ class EmployeeController extends Controller
     public function index()
     {
         //
-        $employees = Employee::all();
-        return view('employees', ['employees' => $employees]);
+        $employees = DB::table('employees')
+        ->join('companies', 'employees.company_id', '=', 'companies.id')
+        ->select('employees.*', 'companies.name')
+        ->get();
+        $companies = Company::all();
+        return view('employees', ['employees' => $employees, 'companies' => $companies]);
     }
 
     /**
@@ -38,6 +44,18 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'company_id' => 'required'
+        ]);
+        if (!empty($request->id)) {
+            $employee = Employee::find($request->id);
+            $employee->update($request->all());
+        } else {
+            Employee::create($request->all());
+        }
+        return redirect()->route('employees.index');
     }
 
     /**
@@ -80,8 +98,14 @@ class EmployeeController extends Controller
      * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Employee $employee)
+    public function destroy($id)
     {
         //
+        $employee = Employee::find($id);
+        $employee->delete();
+
+        // redirect
+        // Session::flash('message', 'Successfully deleted the company!');
+        return redirect()->route('employees.index');
     }
 }

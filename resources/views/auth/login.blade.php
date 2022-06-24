@@ -64,7 +64,16 @@
                                 @endif
                             </div>
                         </div>
+
+                        <div class="row mb-0">
+                            <div class="col-md-8 offset-md-4">
+                                <a class="btn btn-danger my-3" href="">Login with Google</a>
+                            </div>
+                        </div>
                     </form>
+
+                    
+
                 </div>
             </div>
         </div>

@@ -39,11 +39,25 @@ class CompanyController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'website' => 'required'
+        ]);
+        $input = $request->all();
+        if ($image = $request->file('logo')) {
+            $destinationPath = 'img/';
+            // dd($image);
+            $profileImage = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME) . date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $image->move($destinationPath, $profileImage);
+            $input['logo'] = "$profileImage";
+        }
         if (!empty($request->id)) {
             $company = Company::find($request->id);
-            $company->update($request->all());
+            $company->update($input);
         } else {
-            Company::create($request->all());
+            Company::create($input);
         }
         return redirect()->route('companies.index');
     }
@@ -56,8 +70,7 @@ class CompanyController extends Controller
      */
     public function show(Company $company)
     {
-        //
-        
+        //        
         return redirect()->route('dash');
     }
 
@@ -79,14 +92,9 @@ class CompanyController extends Controller
      * @param  \App\Models\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         //
-        // return redirect()->route('dashboard');
-        // $company = Company::find($request->id);
-        // $company->save($request->all());
-
-        // return redirect()->route('companies.index');
     }
 
     /**
@@ -102,7 +110,7 @@ class CompanyController extends Controller
         $company->delete();
 
         // redirect
-        Session::flash('message', 'Successfully deleted the company!');
-        return Redirect::to('companies.index');
+        // Session::flash('message', 'Successfully deleted the company!');
+        return redirect()->route('companies.index');
     }
 }

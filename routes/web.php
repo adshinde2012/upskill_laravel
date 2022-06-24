@@ -29,15 +29,32 @@ Route::get('/welcome', function () {
 
 Route::resource('users', UserController::class);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-});
-
-Route::resource('companies', CompanyController::class);
-
-Route::resource('employees', EmployeeController::class);
 
 Route::match(['GET', 'POST'], 'login',  [AuthController::class, 'index']);
-Auth::routes();
+// Auth::routes();
 
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+Route::group(['middleware' => ['auth']], function () { 
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    });
+    
+    Route::resource('companies', CompanyController::class);
+    
+    Route::resource('employees', EmployeeController::class);
+    
+});
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+// Route::get('/auth/redirect', function () {
+//     return Socialite::driver('github')->redirect();
+// });
+ 
+// Route::get('/auth/callback', function () {
+//     $user = Socialite::driver('github')->user();
+ 
+//     // $user->token
+// });
