@@ -39,15 +39,16 @@ class CompanyController extends Controller
     public function store(Request $request)
     {
         //
+        // dd('aniket shinde');
         $request->validate([
             'name' => 'required',
             'email' => 'required',
-            'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
             'website' => 'required'
         ]);
         $input = $request->all();
         if ($image = $request->file('logo')) {
-            $destinationPath = 'img/';
+            $destinationPath = 'public/img/';
             // dd($image);
             $profileImage = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME) . date('YmdHis') . "." . $image->getClientOriginalExtension();
             $image->move($destinationPath, $profileImage);
