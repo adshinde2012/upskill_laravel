@@ -28,6 +28,7 @@ class CompanyController extends Controller
     public function create()
     {
         //
+        return view('add_company');
     }
 
     /**
@@ -60,7 +61,7 @@ class CompanyController extends Controller
         } else {
             Company::create($input);
         }
-        return redirect()->route('companies.index');
+        return redirect()->route('companies.index')->with('success','Company has been added successfully');
     }
 
     /**

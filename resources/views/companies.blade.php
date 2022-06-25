@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="pagetitle">
-      <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#companyModal"><i class="bi bi-plus me-1"></i> Add Company</button>
+      <a href="{{ route('companies.create') }}" type="button" class="btn btn-primary float-end"><i class="bi bi-plus me-1"></i> Add Company</a>
       <!-- Modal -->
       <div class="modal fade" id="companyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -46,7 +46,12 @@
         </div>
       </div>
 
-
+      @if ($message = Session::get('success'))
+      <div class="alert alert-success alert-dismissible" role="alert">
+          {{ $message }}
+          <a type="button" class="close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></a>
+      </div> 
+      @endif
 
       <h1>Data Tables</h1>
       <nav>
