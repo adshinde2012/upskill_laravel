@@ -43,9 +43,9 @@ class CompanyController extends Controller
         // dd('aniket shinde');
         $request->validate([
             'name' => 'required',
-            'email' => 'required',
+            'email' => 'required|unique:companies',
             'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
-            'website' => 'required'
+            'website' => 'required|unique:companies'
         ]);
         $input = $request->all();
         if ($image = $request->file('logo')) {

@@ -51,8 +51,14 @@
       </div>
 
 
+      @if ($message = Session::get('success'))
+      <div class="alert alert-success alert-dismissible" role="alert">
+          {{ $message }}
+          <a type="button" class="close" data-bs-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></a>
+      </div> 
+      @endif
 
-      <h1>Data Tables</h1>
+      <h1>Employee List</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Home</a></li>
@@ -65,11 +71,8 @@
     <section class="section">
       <div class="row">
         <div class="col-lg-12">
-
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Employee List</h5>
-              
+          <div class="card pt-2">
+            <div class="card-body">              
               <!-- Table with stripped rows -->
               <table class="table datatable">
                 <thead>
@@ -90,9 +93,9 @@
                     <td>{{ $emp->name }}</td>
                     <td class="d-flex">
                       <a href="{{ route('employees.edit', $emp->id) }}" class="float-start" id="editEmployeeBtn"><i class="bi bi-pencil-square p-2 text-success"></i></a>
-                          <a href="#deleteConfirmModal" class="" data-bs-toggle="modal" ><i class="bi bi-trash-fill text-danger"></i></a>
+                          <a href="#deleteConfirmModal{{ $emp->id }}" class="" data-bs-toggle="modal" ><i class="bi bi-trash-fill text-danger"></i></a>
                           <!-- Modal HTML -->
-                          <div id="deleteConfirmModal" class="modal fade">
+                          <div id="deleteConfirmModal{{ $emp->id }}" class="modal fade">
                               <div class="modal-dialog modal-confirm modal-sm">
                                   <div class="modal-content">
                                       <div class="modal-header flex-column">

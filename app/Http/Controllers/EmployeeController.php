@@ -114,6 +114,6 @@ class EmployeeController extends Controller
 
         // redirect
         // Session::flash('message', 'Successfully deleted the company!');
-        return redirect()->route('employees.index');
+        return redirect()->route('employees.index')->with('success', 'Employee has been deleted successfully');
     }
 }

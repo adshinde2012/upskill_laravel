@@ -53,7 +53,7 @@
       </div> 
       @endif
 
-      <h1>Data Tables</h1>
+      <h1>Company List</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Home</a></li>
@@ -67,11 +67,8 @@
       <div class="row">
         <div class="col-lg-12">
 
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Company List</h5>
-              <p><a href="https://github.com/fiduswriter/Simple-DataTables" target="_blank">Simple DataTables</a> library. Just add <code>.datatable</code></p>
-              
+          <div class="card pt-2">
+            <div class="card-body ">
               <!-- Table with stripped rows -->
               <table class="table datatable">
                 <thead>

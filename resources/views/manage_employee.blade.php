@@ -3,11 +3,12 @@
 @section('content')
         <div class="card col-md-8 mx-auto pb-4">
             <div class="card-body">
-            <h5 class="card-title">Add Employee</h5>
             @if (!empty($employee))
+                <h5 class="card-title">Edit Employee</h5>
                 <form method="post" action = "{{ route('employees.update', $employee->id) }}">
                 @method('put')
             @else
+                <h5 class="card-title">Add Employee</h5>
                 <form method="post" action = "{{ url('employees') }}">
             @endif
               @csrf               
