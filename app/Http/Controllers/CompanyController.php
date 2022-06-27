@@ -85,6 +85,7 @@ class CompanyController extends Controller
     public function edit(Company $company)
     {
         //
+        return view('add_company', ['company' => $company]);
     }
 
     /**
@@ -97,6 +98,23 @@ class CompanyController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            // 'logo' => 'required|image|mimes:jpeg,png,jpg,gif,svg',
+            'website' => 'required'
+        ]);
+        $input = $request->all();
+        if ($image = $request->file('logo')) {
+            $destinationPath = 'public/img/';
+            // dd($image);
+            $profileImage = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME) . date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $image->move($destinationPath, $profileImage);
+            $input['logo'] = "$profileImage";
+        }
+        $company = Company::find($id);
+        $company->update($input);
+        return redirect()->route('companies.index')->with('success','Company has been updated successfully');
     }
 
     /**
@@ -113,6 +131,6 @@ class CompanyController extends Controller
 
         // redirect
         // Session::flash('message', 'Successfully deleted the company!');
-        return redirect()->route('companies.index');
+        return redirect()->route('companies.index')->with('success','Company has been deleted successfully');
     }
 }

@@ -97,12 +97,37 @@
                     </td>
                     <td>{{ $comp->website }}</td>
                     <td class="">
-                      <a class="float-start" data-bs-toggle="modal" data-bs-target="#companyModal" id="editCompanyBtn" data-info="{{ $comp }}"><i class="bi bi-pencil-square p-2 text-success"></i></a>
-                      <form action="{{ route('companies.destroy', $comp->id) }}" method="POST">
-                          @method('DELETE')
-                          @csrf
-                          <button class="btn p-0" type="submit" id="deleteCompany"><i class="bi bi-trash-fill text-danger"></i></button>
-                      </form>
+                      <a href="{{ route('companies.edit', $comp) }}" class="float-start" id="editCompanyBtn" data-info="{{ $comp }}"><i class="bi bi-pencil-square p-2 text-success"></i></a>
+
+                      <a href="#deleteConfirmModal{{ $comp->id }}" class="" data-bs-toggle="modal" ><i class="bi bi-trash-fill text-danger"></i></a>
+                      
+                      <!-- Modal HTML -->
+                      <div id="deleteConfirmModal{{ $comp->id }}" class="modal fade">
+                          <div class="modal-dialog modal-confirm modal-sm">
+                              <div class="modal-content">
+                                  <div class="modal-header flex-column">
+                                      <div class="icon-box">
+                                          <i class="material-icons">&times;</i>
+                                      </div>
+                                      <h4 class="modal-title w-100">Are you sure?</h4>
+                                      <a class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</a>
+                                  </div>
+                                  <div class="modal-body">
+                                      <p>Do you really want to delete these records? This process cannot be undone.</p>
+                                  </div>
+                                  <form action="{{ route('companies.destroy', $comp->id) }}" method="POST">
+                                  <div class="modal-footer justify-content-center">
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                      @method('DELETE')
+                                      @csrf
+                                      <!-- <button class="btn p-0" type="submit"><i class="bi bi-trash-fill text-danger"></i></button> -->
+                                      <button type="submit" class="btn btn-danger" id="deleteCompany">Delete</button>
+                                  </div>
+                                  </form>
+                              </div>
+                          </div>
+                      </div>
+
                       </td>
                   </tr>
                   @endforeach

@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="pagetitle">
-      <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#employeeModal"><i class="bi bi-plus me-1"></i> Add Employee</button>
+      <a href="{{ route('employees.create') }}" type="button" class="btn btn-primary float-end"><i class="bi bi-plus me-1"></i> Add Employee</a>
       <!-- Modal -->
       <div class="modal fade" id="employeeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -89,7 +89,7 @@
                     <td>{{ $emp->lastname }}</td>
                     <td>{{ $emp->name }}</td>
                     <td class="d-flex">
-                      <a class="float-start" data-bs-toggle="modal" data-bs-target="#employeeModal" id="editEmployeeBtn" data-info="{{ json_encode($emp) }}"><i class="bi bi-pencil-square p-2 text-success"></i></a>
+                      <a href="{{ route('employees.edit', $emp->id) }}" class="float-start" id="editEmployeeBtn"><i class="bi bi-pencil-square p-2 text-success"></i></a>
                           <a href="#deleteConfirmModal" class="" data-bs-toggle="modal" ><i class="bi bi-trash-fill text-danger"></i></a>
                           <!-- Modal HTML -->
                           <div id="deleteConfirmModal" class="modal fade">

@@ -5,26 +5,43 @@
             <div class="card-body">
             <h5 class="card-title">Add Company</h5>
 
-            <form method="post" action = "{{ url('companies') }}" enctype='multipart/form-data'>
+            @if (!empty($company))
+                <form method="post" action = "{{ route('companies.update', $company->id) }}" enctype='multipart/form-data'>
+                @method('put')
+            @else
+                <form method="post" action = "{{ url('companies') }}" enctype='multipart/form-data'>
+            @endif
               @csrf               
                 <div class="row g-3">
                     <div class="col-12">
                         <label for="name" class="form-label">Company Name</label>
-                        <input type="text" class="form-control" id="name" name="name">
+                        <input type="text" class="form-control" id="name" name="name" value="{{ $company->name ?? '' }}">
+                        @error('name')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="col-12">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email">
+                        <input type="email" class="form-control" id="email" name="email" value="{{ $company->email ?? '' }}">
+                        @error('email')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="col-12">
                         <label for="logo" class="form-label">Logo</label>
-                        <input type="file" class="form-control" id="logo" name="logo">
+                        <input type="file" class="form-control" id="logo" name="logo" value="{{ $company->logo ?? '' }}">
+                        @error('logo')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="col-12">
                         <label for="website" class="form-label">Website</label>
-                        <input type="text" class="form-control" id="website" name="website">
+                        <input type="text" class="form-control" id="website" name="website" value="{{ $company->website ?? '' }}">
+                        @error('website')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
-                    <input type="hidden" class="form-control" id="id" name="id">
+                    {{-- <input type="hidden" class="form-control" id="id" name="id"> --}}
                 </div> 
             </div>
             <div class="text-center">

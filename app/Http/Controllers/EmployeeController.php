@@ -33,6 +33,8 @@ class EmployeeController extends Controller
     public function create()
     {
         //
+        $companies = Company::all();
+        return view('manage_employee', ['companies' => $companies]);
     }
 
     /**
@@ -49,13 +51,8 @@ class EmployeeController extends Controller
             'lastname' => 'required',
             'company_id' => 'required'
         ]);
-        if (!empty($request->id)) {
-            $employee = Employee::find($request->id);
-            $employee->update($request->all());
-        } else {
-            Employee::create($request->all());
-        }
-        return redirect()->route('employees.index');
+        Employee::create($request->all());
+        return redirect()->route('employees.index')->with('success', 'Employee has been added successfully');
     }
 
     /**
@@ -75,9 +72,12 @@ class EmployeeController extends Controller
      * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function edit(Employee $employee)
+    public function edit($id)
     {
         //
+        $employee = Employee::find($id);
+        $companies = Company::all();
+        return view('manage_employee', ['employee' => $employee, 'companies' => $companies]);
     }
 
     /**
@@ -87,9 +87,17 @@ class EmployeeController extends Controller
      * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Employee $employee)
+    public function update(Request $request, $id)
     {
         //
+        $request->validate([
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'company_id' => 'required'
+        ]);
+	$employee = Employee::find($id);
+	$employee->update($request->all());
+        return redirect()->route('employees.index')->with('success','Employee has been updated successfully');
     }
 
     /**
