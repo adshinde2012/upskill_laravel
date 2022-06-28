@@ -49,7 +49,7 @@ class CompanyController extends Controller
         ]);
         $input = $request->all();
         if ($image = $request->file('logo')) {
-            $destinationPath = 'public/img/';
+            $destinationPath = storage_path('app/public/img/');
             // dd($image);
             $profileImage = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME) . date('YmdHis') . "." . $image->getClientOriginalExtension();
             $image->move($destinationPath, $profileImage);

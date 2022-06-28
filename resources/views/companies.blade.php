@@ -89,7 +89,7 @@
                     <td>{{ $comp->email }}</td>
                     <td>
                     <a href="" data-fancybox="gallery" data-caption="Caption Images 1">
-                      <img src="public/img/{{ $comp->logo }}" height="75" width="75" alt="" />
+                      <img src="" height="75" width="75" alt="" />
                     </a>
                     </td>
                     <td>{{ $comp->website }}</td>
