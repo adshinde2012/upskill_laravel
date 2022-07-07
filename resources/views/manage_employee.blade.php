@@ -15,15 +15,22 @@
                 <div class="row g-3">
 			<div class="col-12">
 			    <label for="firstname" class="form-label">Firstname</label>
-			    <input type="text" class="form-control" id="firstname" name="firstname" value="{{ $employee->firstname ?? '' }}">
+			    <input type="text" class="form-control" id="firstname" name="firstname" value="{{ $employee->firstname ?? old('firstname') }}">
 			    @error('firstname')
 			    <div class="text-danger">{{ $message }}</div>
 			    @enderror
 			</div>
 			<div class="col-12">
 			    <label for="lastname" class="form-label">Lastname</label>
-			    <input type="text" class="form-control" id="lastname" name="lastname" value="{{ $employee->lastname ?? '' }}">
+			    <input type="text" class="form-control" id="lastname" name="lastname" value="{{ $employee->lastname ?? old('lastname') }}">
 			    @error('lastname')
+			    <div class="text-danger">{{ $message }}</div>
+			    @enderror
+			</div>
+			<div class="col-12">
+			    <label for="email" class="form-label">Email</label>
+			    <input type="text" class="form-control" id="email" name="email" value="{{ $employee->email ?? old('email') }}">
+			    @error('email')
 			    <div class="text-danger">{{ $message }}</div>
 			    @enderror
 			</div>

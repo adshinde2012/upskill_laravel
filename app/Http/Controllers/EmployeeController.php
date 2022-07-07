@@ -6,6 +6,8 @@ use App\Models\Employee;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Mail;
+use App\Mail\EmployeeNotifyMail;
 
 class EmployeeController extends Controller
 {
@@ -17,10 +19,11 @@ class EmployeeController extends Controller
     public function index()
     {
         //
-        $employees = DB::table('employees')
-        ->join('companies', 'employees.company_id', '=', 'companies.id')
-        ->select('employees.*', 'companies.name')
-        ->get();
+        $employees = Employee::join('companies', 'employees.company_id', '=', 'companies.id')->get(['employees.*', 'companies.name']);
+        // $employees = DB::table('employees')
+        // ->join('companies', 'employees.company_id', '=', 'companies.id')
+        // ->select('employees.*', 'companies.name')
+        // ->get();
         $companies = Company::all();
         return view('employees', ['employees' => $employees, 'companies' => $companies]);
     }
@@ -49,9 +52,12 @@ class EmployeeController extends Controller
         $request->validate([
             'firstname' => 'required',
             'lastname' => 'required',
+            'email' => 'required|unique:employees',
             'company_id' => 'required'
         ]);
         Employee::create($request->all());
+        $empEmail = $request->email;
+        Mail::to($empEmail)->send(new EmployeeNotifyMail());
         return redirect()->route('employees.index')->with('success', 'Employee has been added successfully');
     }
 
@@ -93,10 +99,11 @@ class EmployeeController extends Controller
         $request->validate([
             'firstname' => 'required',
             'lastname' => 'required',
+            'email' => 'required|unique:employees,email,' . $id . ',id',
             'company_id' => 'required'
         ]);
-	$employee = Employee::find($id);
-	$employee->update($request->all());
+        $employee = Employee::find($id);
+        $employee->update($request->all());
         return redirect()->route('employees.index')->with('success','Employee has been updated successfully');
     }
 

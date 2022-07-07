@@ -3,49 +3,6 @@
 @section('content')
 
     <div class="pagetitle">
-      <a href="{{ route('companies.create') }}" type="button" class="btn btn-primary float-end"><i class="bi bi-plus me-1"></i> Add Company</a>
-      <!-- Modal -->
-      <div class="modal fade" id="companyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Add Company</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <!-- Vertical Form -->
-            <form method="post" action = "{{ url('companies') }}" enctype='multipart/form-data'>
-              @csrf
-            <div class="modal-body">
-               
-              <div class="row g-3">
-                <div class="col-12">
-                  <label for="name" class="form-label">Company Name</label>
-                  <input type="text" class="form-control" id="name" name="name">
-                </div>
-                <div class="col-12">
-                  <label for="email" class="form-label">Email</label>
-                  <input type="email" class="form-control" id="email" name="email">
-                </div>
-                <div class="col-12">
-                  <label for="logo" class="form-label">Logo</label>
-                  <input type="file" class="form-control" id="logo" name="logo">
-                </div>
-                <div class="col-12">
-                  <label for="website" class="form-label">Website</label>
-                  <input type="text" class="form-control" id="website" name="website">
-                </div>
-                <input type="hidden" class="form-control" id="id" name="id">
-              </div> 
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Reset</button>
-              <button type="submit" class="btn btn-primary">Save</button>
-            </div>
-            </form>
-          </div>
-        </div>
-      </div>
-
       @if ($message = Session::get('success'))
       <div class="alert alert-success alert-dismissible" role="alert">
           {{ $message }}
@@ -53,6 +10,7 @@
       </div> 
       @endif
 
+      <a href="{{ route('companies.create') }}" type="button" class="btn btn-primary float-end"><i class="bi bi-plus me-1"></i> Add Company</a>
       <h1>Company List</h1>
       <nav>
         <ol class="breadcrumb">
@@ -88,8 +46,8 @@
                     <td>{{ $comp->name }}</td>
                     <td>{{ $comp->email }}</td>
                     <td>
-                    <a href="" data-fancybox="gallery" data-caption="Caption Images 1">
-                      <img src="" height="75" width="75" alt="" />
+                    <a href="{{ asset('storage/app/public/img') . '/' . $comp->logo }}" data-fancybox="gallery" data-caption="Caption Images 1">
+                      <img src="{{ asset('storage/app/public/img') . '/' . $comp->logo }}" height="75" width="75" alt="" />
                     </a>
                     </td>
                     <td>{{ $comp->website }}</td>

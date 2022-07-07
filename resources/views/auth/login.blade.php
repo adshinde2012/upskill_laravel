@@ -70,6 +70,12 @@
                         </button>
                     </div>
                     <div class="col-12">
+                        <a href="{{ url('auth/google') }}" class="btn btn-danger p-0 w-100">
+                            <img src="{{ asset('public/assets/img/google_logo6.png') }}" height="36" width="38" class="google-img">
+                            Sign in with Google
+                        </a>
+                    </div>
+                    <div class="col-12 text-center">
                       <p class="small mb-0">Don't have account? <a href="{{ route('register') }}">Create an account</a></p>
                     </div>
                   </form>

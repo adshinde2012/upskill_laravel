@@ -3,54 +3,6 @@
 @section('content')
 
     <div class="pagetitle">
-      <a href="{{ route('employees.create') }}" type="button" class="btn btn-primary float-end"><i class="bi bi-plus me-1"></i> Add Employee</a>
-      <!-- Modal -->
-      <div class="modal fade" id="employeeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Add Employee</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <!-- Vertical Form -->
-            <form method="post" action = "{{ url('employees') }}">
-              @csrf
-            <div class="modal-body">
-               
-              <div class="row g-3">
-                <div class="col-12">
-                  <label for="firstname" class="form-label">Firstname</label>
-                  <input type="text" class="form-control" id="firstname" name="firstname">
-                  @error('firstname')
-                      <div class="text-danger">{{ $message }}</div>
-                  @enderror
-                </div>
-                <div class="col-12">
-                  <label for="lastname" class="form-label">Lastname</label>
-                  <input type="text" class="form-control" id="lastname" name="lastname">
-                </div>
-                <div class="col-12">
-                  <label class="col-sm-2 col-form-label">Select</label>
-                  <select class="form-select" id="company_id" name="company_id">
-                    <option selected="">Select Company</option>
-                    @foreach ($companies as $company)
-                    <option value="{{ $company->id }}">{{ $company->name }}</option>
-                    @endforeach
-                  </select>
-                </div>
-                <input type="hidden" class="form-control" id="id" name="id">
-              </div> 
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Reset</button>
-              <button type="submit" class="btn btn-primary">Save</button>
-            </div>
-            </form>
-          </div>
-        </div>
-      </div>
-
-
       @if ($message = Session::get('success'))
       <div class="alert alert-success alert-dismissible" role="alert">
           {{ $message }}
@@ -58,6 +10,7 @@
       </div> 
       @endif
 
+      <a href="{{ route('employees.create') }}" type="button" class="btn btn-primary float-end"><i class="bi bi-plus me-1"></i> Add Employee</a>
       <h1>Employee List</h1>
       <nav>
         <ol class="breadcrumb">
@@ -80,6 +33,7 @@
                     <th scope="col">#</th>
                     <th scope="col">First Name</th>
                     <th scope="col">Last Name</th>
+                    <th scope="col">Email</th>
                     <th scope="col">Company</th>
                     <th scope="col">Action</th>
                   </tr>
@@ -90,6 +44,7 @@
                     <th scope="row">{{ $loop->index + 1 }}</th>
                     <td>{{ $emp->firstname }}</td>
                     <td>{{ $emp->lastname }}</td>
+                    <td>{{ $emp->email }}</td>
                     <td>{{ $emp->name }}</td>
                     <td class="d-flex">
                       <a href="{{ route('employees.edit', $emp->id) }}" class="float-start" id="editEmployeeBtn"><i class="bi bi-pencil-square p-2 text-success"></i></a>

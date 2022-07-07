@@ -31,9 +31,9 @@ return [
     ],
 
     'google' => [
-        'client_id' => env('GOOGLE_CLIENT_ID'),
-        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect' => 'http://example.com/callback-url',
+        'client_id' => '293656764136-6l82klc51hknue5uik6eck6qobjoet3q.apps.googleusercontent.com',
+        'client_secret' => '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',
+        'redirect' => 'http://laravel.aniket.shinde.radixusers2.com/auth/google/callback',
     ],
 
 ];

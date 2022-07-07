@@ -1190,6 +1190,11 @@ h1, h2, h3, h4, h5, h6 {
         clear: right;
         right: 10px;
         margin-right: -35px;
-        margin-top: -25px;
-        font-size: 20px;
+        margin-top: -13px;
+        font-size: 32px;
+    }
+
+    .google-img {
+      padding: 5px;
+      border-radius: 20px;
     }
